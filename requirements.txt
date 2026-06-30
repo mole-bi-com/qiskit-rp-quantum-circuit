@@ -1,0 +1,5 @@
+# qiskit-rp-quantum-circuit
+numpy>=1.24
+qiskit>=2.4,<3
+qiskit-aer>=0.16
+matplotlib>=3.7

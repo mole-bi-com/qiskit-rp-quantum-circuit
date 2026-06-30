@@ -271,10 +271,24 @@ def evolve_circuit_shots(t_values, n_trotter=15, omega=0.1, J=0.01,
 
 def singlet_yield(P_S, t_values, k_S=0.5, k_T=0.5):
     """
-    Φ_S = k_S ∫₀^∞ P_S(t) · exp(-(k_S+k_T)·t) dt
+    Φ_S = k_S ∫₀^∞ Tr[P_S ρ(t)] dt
 
-    Parameters k_S, k_T in natural units.
+    Correct non-trace-preserving RP yield formula.
+    The Liouvillian already accounts for recombination via
+    anti-commutator terms; no additional exponential damping.
+
+    Parameters
+    ----------
+    P_S : ndarray
+        Singlet population trajectory P_S(t).
+    t_values : ndarray
+        Time points [ns].
+    k_S, k_T : float
+        Recombination rates [1/ns] (natural units).
+
+    Returns
+    -------
+    phi_S : float
+        Singlet recombination yield.
     """
-    k_total = k_S + k_T
-    weights = np.exp(-k_total * t_values)
-    return k_S * np.trapezoid(P_S * weights, t_values)
+    return k_S * np.trapz(P_S, t_values)
